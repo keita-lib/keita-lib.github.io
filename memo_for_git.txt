@@ -1,17 +1,7 @@
-なるほど！👍
-スクショを見る限り、GitHub Pages の「Branch」で選択肢が **None** しか出ていませんね。
-これは **リポジトリにまだ1つもブランチ（main/master）が存在しない** ためです。
-
----
-
-## ✅ 解決方法（ブランチを作る）
 
 1. **まずファイルをpush（アップロード）する**
 
-   * ローカルPCに `index.html`, `assets/styles.css`, `assets/app.js` を準備。
-   * そのフォルダで以下を実行（Gitが入っている前提）：
 
-   ```bash
    git init
    git add .
    git commit -m "first commit"
@@ -50,3 +40,83 @@
 
 👉 ご質問：いまPCに **Git環境（gitコマンド）** ありますか？
 それとも **GitHub上で直接ファイルをアップロード**する方法の方が良いですか？
+
+===========================
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+## 設定
+
+git config --global user.name "keita"
+git config --global user.email "32783655+keita-lib@users.noreply.github.com"
+
+## 確認
+
+PS C:\Users\keita\projects\financial_website> git config user.name 
+keita
+
+PS C:\Users\keita\projects\financial_website> git config user.email
+32783655+keita-lib@users.noreply.github.com
+
+## コミット
+PS C:\Users\keita\projects\financial_website> git commit -m "first commit"
+[master (root-commit) 4fb0b91] first commit
+ 11 files changed, 993 insertions(+)
+ create mode 100644 assets/app.js
+ create mode 100644 assets/manifest.webmanifest
+ create mode 100644 assets/styles.css
+ create mode 100644 index.html
+ create mode 100644 memo_for_git.txt
+ create mode 100644 pages/faq.html
+ create mode 100644 pages/founder.html
+ create mode 100644 pages/founder_detail.html
+ create mode 100644 pages/glossary.html
+ create mode 100644 pages/simulator.html
+ create mode 100644 sw.js
+
+
+PS C:\Users\keita\projects\financial_website> git branch -M main
+PS C:\Users\keita\projects\financial_website> git remote add origin https://github.com/keita-lib/life-money-site.git
+PS C:\Users\keita\projects\financial_website> git push -u origin main
+
+
+PS C:\Users\keita\projects\financial_website> git remote add origin https://github.com/keita-lib/life-money-site.git                     
+error: remote origin already exists.
+PS C:\Users\keita\projects\financial_website> git remote set-url origin https://github.com/keita-lib/life-money-site.git
+PS C:\Users\keita\projects\financial_website> git remote -v   #  確認：fetch/push 両方このURLになっていればOK
+origin  https://github.com/keita-lib/life-money-site.git (fetch)
+origin  https://github.com/keita-lib/life-money-site.git (push)
+PS C:\Users\keita\projects\financial_website> git push -u origin main
+info: please complete authentication in your browser...
+Enumerating objects: 15, done.
+Counting objects: 100% (15/15), done.
+Delta compression using up to 24 threads
+Compressing objects: 100% (11/11), done.
+Writing objects: 100% (15/15), 17.63 KiB | 8.82 MiB/s, done.
+Total 15 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/keita-lib/life-money-site.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+PS C:\Users\keita\projects\financial_website> 
+PS C:\Users\keita\projects\financial_website> 
+PS C:\Users\keita\projects\financial_website> git branch
+* main
+PS C:\Users\keita\projects\financial_website> git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   memo_for_git.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        "t commit\357\200\242git commit -m \357\200\242first commit\357\200\242qwqq"
+
+no changes added to commit (use "git add" and/or "git commit -a")
+PS C:\Users\keita\projects\financial_website> git remote set-url origin https://github.com/keita-lib/life-money-site.git
+PS C:\Users\keita\projects\financial_website> git remote -v
+origin  https://github.com/keita-lib/life-money-site.git (fetch)
+origin  https://github.com/keita-lib/life-money-site.git (push)
+PS C:\Users\keita\projects\financial_website> git push -u origin main
