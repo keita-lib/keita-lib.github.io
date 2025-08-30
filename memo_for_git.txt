@@ -1,0 +1,52 @@
+なるほど！👍
+スクショを見る限り、GitHub Pages の「Branch」で選択肢が **None** しか出ていませんね。
+これは **リポジトリにまだ1つもブランチ（main/master）が存在しない** ためです。
+
+---
+
+## ✅ 解決方法（ブランチを作る）
+
+1. **まずファイルをpush（アップロード）する**
+
+   * ローカルPCに `index.html`, `assets/styles.css`, `assets/app.js` を準備。
+   * そのフォルダで以下を実行（Gitが入っている前提）：
+
+   ```bash
+   git init
+   git add .
+   git commit -m "first commit"
+   git branch -M main
+   git remote add origin https://github.com/あなたのユーザー名/リポジトリ名.git
+   git push -u origin main
+   ```
+
+   👉 これで `main` ブランチができて、GitHubに反映されます。
+
+---
+
+2. **GitHub上で直接ファイルを追加する方法（もっと簡単）**
+
+   * GitHub のリポジトリ画面で「Add file → Upload files」を選択。
+   * `index.html` を最低1つアップロードしてコミットする。
+   * すると自動的に `main` ブランチが作成されます。
+
+---
+
+3. **再度 GitHub Pages の設定を開く**
+
+   * Settings → Pages
+   * Branch のプルダウンに `main` が出てくるはず。
+   * `/ (root)` を選択して保存。
+   * 数分後に `https://ユーザー名.github.io/リポジトリ名/` が有効になります。
+
+---
+
+💡 ポイント
+
+* **ブランチが出ないのは「中身が空っぽ」だから**。
+* まず何かしらファイルをコミットして初めて `main` が選べます。
+
+---
+
+👉 ご質問：いまPCに **Git環境（gitコマンド）** ありますか？
+それとも **GitHub上で直接ファイルをアップロード**する方法の方が良いですか？

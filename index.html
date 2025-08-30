@@ -1,0 +1,113 @@
+<!-- index.html placeholder, actual content from canvas -->
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Life×Money — 金融リテラシー×ライフデザイン</title>
+  <meta name="description" content="中高生から大人まで、やさしく学び、体験し、人生を設計できる金融リテラシー教育サイト" />
+  <meta name="theme-color" content="#0b2240" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png" />
+  <link rel="manifest" href="/assets/manifest.webmanifest" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="/index.html">
+        <span style="font-weight:700;font-size:1.2rem;color:var(--accent)">Life×Money</span>
+      </a>
+      <nav>
+        <a class="btn ghost" href="/pages/founder.html">創設者の想い</a>
+        <a class="btn ghost" href="/pages/simulator.html">シミュレーション</a>
+        <a class="btn ghost" href="/pages/glossary.html">やさしい用語</a>
+        <a class="btn ghost" href="/pages/faq.html">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <h1>金融リテラシーは、人生の自由を取り戻す力</h1>
+      <p class="lead">難しい言葉は抜きにして、中学生でも大人でも分かるように。<br>あなたのライフデザインの一歩を応援します。</p>
+      <div class="cta">
+        <a class="btn primary" href="#simulation">ちょっと体験してみる</a>
+        <a class="btn primary" href="/pages/simulator.html">深く体験してみる</a>
+ 
+
+        <a class="btn ghost" href="/pages/founder.html">創設者の想い</a>
+        <a class="btn ghost" href="/pages/founder_detail.html">創設者の想い・詳細</a>
+      </div>
+    </section>
+
+    <section class="container" style="margin-top:2.5rem">
+      <div class="grid cols-3">
+        <div class="card"><h3>やさしく学ぶ</h3><p class="muted">金融やお金の基本を、シンプルに理解できるよう工夫しています。</p></div>
+        <div class="card"><h3>体験で分かる</h3><p class="muted">シミュレーションを通じて、複利やインフレなどの効果を直感的に体験できます。</p></div>
+        <div class="card"><h3>未来を描く</h3><p class="muted">学びながら、自分の教育・キャリア・お金の使い方を考えるきっかけに。</p></div>
+      </div>
+    </section>
+<!-- 1分でわかる複利体験 セクション -->
+<section id="simulation" class="container teaser">
+  <div>
+    <h2>1分でわかる「複利」体験</h2>
+    <p class="muted">初期資金・年率・年数を動かして、どれくらい増えるか試してみましょう。</p>
+
+    <div class="sim-preview">
+      <div class="sim-head">
+        <label>元本:
+          <!-- 最小 100万円, 最大 1億円, 100万円刻み -->
+          <input type="range" id="principal" min="1000000" max="100000000" step="1000000" value="1000000" class="range"/>
+        </label>
+        <label>年率:
+          <!-- 0〜20%, 0.1%刻み -->
+          <input type="range" id="rate" min="0" max="20" step="0.1" value="5.0" class="range"/>
+        </label>
+        <label>年数:
+          <!-- 1〜50年, 1年刻み -->
+          <input type="range" id="years" min="1" max="50" step="1" value="10" class="range"/>
+        </label>
+      </div>
+
+      <div class="mini-stats">
+        <span class="chip">元本: <span id="chip-p"></span></span>
+        <span class="chip">年率: <span id="chip-r"></span></span>
+        <span class="chip">年数: <span id="chip-y"></span></span>
+      </div>
+
+      <div class="result-line">
+        <div class="result" id="sim-result">—</div>
+        <span id="sim-status" class="badge-status" aria-live="polite" style="display:none"></span>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a class="btn primary" href="/pages/simulator.html">もっと詳しくシミュレーション</a>
+    </div>
+  </div>
+  <!-- 右側グラフ領域 -->
+  <div class="art">
+  <canvas id="sim-chart" width="560" height="320" aria-label="将来価値の推移グラフ"></canvas>
+</div>
+
+</section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="y"></span> Life×Money — 金融リテラシー×ライフデザイン</p>
+    </div>
+  </footer>
+
+  <script defer src="/assets/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(console.error);
+      });
+    }
+  </script>
+</body>
+</html>

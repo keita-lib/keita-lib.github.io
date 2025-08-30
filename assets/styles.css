@@ -1,0 +1,300 @@
+/* Life×Money — styles.css (upgraded & accessibility improved) */
+:root{
+  --bg:#0b2240;
+  --fg:#eaf0f7;
+  --muted:#a7b6c9;
+  --accent:#3fb3ff;
+  --accent-2:#e3b341;
+  --card:#102a4d;
+  --border:#1b3a66;
+  --font-ui: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Noto Sans JP",sans-serif;
+  --fs-1: clamp(1.9rem,4vw,3rem);
+  --fs-2: clamp(1.3rem,2.4vw,1.7rem);
+  --fs-3: 1.12rem;
+  --container: min(1120px,92%);
+  --radius: 1rem;
+  --radius-sm: .7rem;
+}
+@media (prefers-color-scheme: light){
+  :root{ --bg:#f7f9fc; --fg:#101622; --muted:#5b6676; --card:#ffffff; --border:#e6e9ef; }
+}
+*{box-sizing:border-box}
+
+html {scroll-behavior: smooth;} /* スムーズスクロールを全ページに適用 */
+
+:target {                          /* アンカー位置の余白 */
+  scroll-margin-top: 80px;         /* ヘッダーの高さに合わせて調整 */
+}
+
+html,body{margin:0;padding:0;color:var(--fg);background:var(--bg);font:16px/1.6 var(--font-ui);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.container{width:var(--container);margin-inline:auto}
+
+
+
+
+/* Header */
+header{position:sticky;top:0;background:linear-gradient(to bottom, rgba(11,34,64,.95), rgba(11,34,64,.7));backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--border);z-index:20}
+@media (prefers-color-scheme: light){
+  header { background: linear-gradient(to bottom, rgba(255,255,255,.9), rgba(255,255,255,.75)); border-bottom-color: #dfe5ee; }
+}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0}
+.brand{display:flex;align-items:center;gap:.6rem;font-weight:700;letter-spacing:.02em}
+
+/* Hero section */
+.hero{padding:7rem 0 4rem;background:
+  radial-gradient(1200px 480px at 50% -10%, rgba(63,179,255,.15), transparent),
+  radial-gradient(900px 420px at 85% 10%, rgba(227,179,65,.12), transparent);}
+.hero .container{max-width:920px}
+.hero h1{font-size:var(--fs-1);line-height:1.25;margin:0 0 1.25rem 0;letter-spacing:.01em}
+.hero .lead{color:var(--muted);font-size:1.1rem;margin:.2rem 0 1.2rem;max-width:720px}
+
+/* Grid cards */
+.grid{display:grid;gap:1rem}
+.cols-3{grid-template-columns:1fr}
+@media (min-width:900px){.cols-3{grid-template-columns:1fr 1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;transition:box-shadow .2s ease,transform .2s ease}
+.card h3{margin:.2rem 0 .2rem;font-size:1.08rem}
+@media (prefers-color-scheme: light){
+  .card{box-shadow:0 4px 18px rgba(16,42,77,.06)}
+  .card:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(16,42,77,.08)}
+}
+@media (prefers-color-scheme: dark){
+  .card{box-shadow:0 2px 10px rgba(0,0,0,.25)}
+  .card:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.35)}
+}
+
+/* Teaser */
+.teaser{display:grid;gap:1rem;grid-template-columns:1fr;align-items:center;margin-top:2rem}
+@media(min-width:860px){.teaser{grid-template-columns:1.2fr .8fr}}
+.art{min-height:220px;border-radius:var(--radius);background:
+  linear-gradient(180deg, rgba(227,179,65,.22), rgba(63,179,255,.18)),
+  url('/assets/cover-horizon.jpg') center/cover no-repeat;filter:saturate(110%)}
+
+/* Simulation */
+.sim-preview{display:grid;gap:1rem;padding:1rem}
+.sim-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.range{accent-color:var(--accent);width:100%;background:transparent}
+.mini-stats{display:flex;gap:.6rem;flex-wrap:wrap}
+.chip{display:inline-flex;gap:.35rem;align-items:center;border:1px solid var(--border);border-radius:999px;padding:.35rem .6rem;background:#0f274a}
+.result{font-size:1.15rem}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.8rem 1.05rem;border-radius:.9rem;border:1px solid var(--border);cursor:pointer;transition:transform .08s ease,box-shadow .2s ease,background .2s ease}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn:focus-visible{box-shadow:0 0 0 3px rgba(63,179,255,.3);outline:none}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+.btn.primary{
+  background: var(--accent);
+  color:#fff;                 /* 白文字でコントラスト強化 */
+  border:1px solid var(--accent);
+  font-weight:700;
+}
+.btn.primary:hover{background:#0077cc} /* hoverで暗く */
+.btn.ghost{
+  background:#f0f4f9;
+  color:#0b2240;
+  border:1px solid var(--accent);
+}
+.btn.ghost:hover{background:#e2e8f0}
+
+
+/* Footer */
+footer{margin-top:4rem;border-top:1px solid var(--border);padding:2.2rem 0;color:var(--muted)}
+
+/* Modal */
+#modal{max-width:min(880px,92%);border:none;border-radius:var(--radius);padding:0}
+.modal-inner{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:1rem 1rem .5rem 1rem;border-bottom:1px solid var(--border)}
+.modal-body{padding:1rem 1.1rem}
+
+/* Text */
+.muted{color:var(--muted)}
+
+/* === CTAボタン中央揃え === */
+.cta {
+  display: flex;
+  justify-content: center;   /* 横方向中央寄せ */
+  gap: 1rem;                 /* ボタンの間隔 */
+  flex-wrap: wrap;           /* 小さい画面で折り返し */
+  margin-top: 1.5rem;
+}
+
+/* Range sliders */
+input[type="range"]{height:28px;background:transparent}
+input[type="range"]::-webkit-slider-runnable-track{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--accent) 0,var(--accent) 40%,#aeb6c2 40%,#aeb6c2 100%)}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;margin-top:-6px;border-radius:50%;background:var(--fg);border:2px solid var(--accent);box-shadow:0 2px 6px rgba(0,0,0,.2)}
+input[type="range"]::-moz-range-track{height:6px;border-radius:999px;background:#aeb6c2}
+input[type="range"]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--fg);border:2px solid var(--accent);box-shadow:0 2px 6px rgba(0,0,0,.2)}
+
+/* Motion & print */
+/*@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}} */
+@media print{
+  header,footer,.cta,nav,.sim-preview input{display:none !important}
+  .card{page-break-inside:avoid}
+}
+
+/* Hero gradient title */
+.hero h1{
+  background:linear-gradient(90deg,#0e2a4c,#1d4a7c);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+@media (prefers-color-scheme: dark){
+  .hero h1{background:linear-gradient(90deg,#cfe8ff,#e8f1ff);-webkit-background-clip:text;background-clip:text}
+}
+
+/* --- Mini simulator visibility --- */
+.mini-stats { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: .6rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  border: 1px solid var(--accent);
+  background: #ffffff;           /* ライト背景で見やすく */
+  color: #0b2240;
+  border-radius: 999px;
+  padding: .35rem .6rem;
+  font-weight: 600;
+}
+.result {
+  margin-top: .8rem;
+  font-size: 1.25rem;            /* 大きめ */
+  font-weight: 700;
+}
+
+/* スライダートラックの初期状態（JSで上書きされる） */
+input[type="range"]{
+  height: 28px; background: transparent; width: 100%;
+}
+input[type="range"]::-webkit-slider-runnable-track{
+  height: 6px; border-radius: 999px; background: #aeb6c2;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none; width: 18px; height: 18px; margin-top: -6px;
+  border-radius: 50%; background: var(--fg); border: 2px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+input[type="range"]::-moz-range-track{ height: 6px; border-radius: 999px; background: #aeb6c2; }
+input[type="range"]::-moz-range-thumb{
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--fg); border: 2px solid var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+
+/* === Range slider: cross-browser visible track === */
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #aeb6c2;       /* 初期状態のバー */
+  border-radius: 999px;
+  outline: none;
+}
+
+/* WebKit (Chrome/Edge/Safari) */
+.range::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #aeb6c2;       /* 常にベースのバーが見える */
+  border-radius: 999px;
+}
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px; height: 18px;
+  margin-top: -6px;           /* 親トラック中央に来るよう調整 */
+  border-radius: 50%;
+  background: var(--fg);
+  border: 2px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+
+/* Firefox */
+.range::-moz-range-track {
+  height: 6px;
+  background: #aeb6c2;
+  border-radius: 999px;
+}
+.range::-moz-range-progress {
+  height: 6px;
+  background: var(--accent);  /* 進捗側（Firefox） */
+  border-radius: 999px;
+}
+.range::-moz-range-thumb {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--fg);
+  border: 2px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+
+/* スライダーの“中央の灰色の筋”を消す */
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: transparent;               /* ベースはJSで塗る */
+  border-radius: 999px;
+  outline: none;
+}
+
+/* WebKit (Chrome/Edge/Safari) — トラックを透明に */
+.range::-webkit-slider-runnable-track {
+  height: 6px;
+  background: transparent !important;    /* ←ここがポイント */
+  border-radius: 999px;
+}
+
+/* Firefox — トラック/進捗どちらも透明にして要素背景を見せる */
+.range::-moz-range-track    { height: 6px; background: transparent !important; border-radius: 999px; }
+.range::-moz-range-progress { height: 6px; background: transparent !important; border-radius: 999px; }
+
+/* サム（つまみ）はそのまま */
+.range::-webkit-slider-thumb{
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px; margin-top: -6px;
+  border-radius: 50%;
+  background: #0b1b2b;                   /* 視認性の良い濃色 */
+  border: 2px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+.range::-moz-range-thumb{
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #0b1b2b;
+  border: 2px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+
+/* 将来価値 行 */
+.result-line{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  margin-top:.8rem;
+}
+
+/* 右側のステータス・バッジ */
+.badge-status{
+  display:inline-flex;
+  align-items:center;
+  padding:.3rem .65rem;
+  border-radius:999px;
+  font-weight:700;
+  font-size:.95rem;
+  border:1px solid var(--accent);
+  background:#08223a;  /* 目立つ濃紺 */
+  color:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+/* ステータス別の強調（任意で色変え） */
+.status-uppermass { background:#0b4a7a; }       /* アッパーマス */
+.status-prewealthy{ background:#1d5fb0; }       /* 準富裕層 */
+.status-wealthy   { background:#b88900; color:#0b2240; } /* 富裕層=金色系 */
+.status-ultra     { background:#5b2ca0; }       /* 超富裕層 */
