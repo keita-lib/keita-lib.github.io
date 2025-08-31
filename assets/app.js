@@ -69,6 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const cssH = canvas.clientHeight || 320;
     canvas.width = Math.round(cssW * dpr);
     canvas.height = Math.round(cssH * dpr);
+    // ↓ 追加: CSSピクセルサイズも明示的に指定
+    canvas.style.width = cssW + "px";
+    canvas.style.height = cssH + "px";
 
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);

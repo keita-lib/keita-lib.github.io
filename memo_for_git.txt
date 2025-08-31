@@ -1,122 +1,100 @@
-
-1. **まずファイルをpush（アップロード）する**
-
-
-   git init
-   git add .
-   git commit -m "first commit"
-   git branch -M main
-   git remote add origin https://github.com/あなたのユーザー名/リポジトリ名.git
-   git push -u origin main
-   ```
-
-   👉 これで `main` ブランチができて、GitHubに反映されます。
+ナイス判断。**`keita-lib/keita-lib.github.io`** に切り替えた今、最短で本番公開を安定運用に持っていく“決定版レシピ”です。必要コマンドだけ一気に貼ります。
 
 ---
 
-2. **GitHub上で直接ファイルを追加する方法（もっと簡単）**
+# 1) origin の付け替え & 確認
 
-   * GitHub のリポジトリ画面で「Add file → Upload files」を選択。
-   * `index.html` を最低1つアップロードしてコミットする。
-   * すると自動的に `main` ブランチが作成されます。
+（もう済んでいても再確認だけ）
 
----
+```powershell
+git remote set-url origin https://github.com/keita-lib/keita-lib.github.io.git
+git remote -v
+```
 
-3. **再度 GitHub Pages の設定を開く**
-
-   * Settings → Pages
-   * Branch のプルダウンに `main` が出てくるはず。
-   * `/ (root)` を選択して保存。
-   * 数分後に `https://ユーザー名.github.io/リポジトリ名/` が有効になります。
+**出力が fetch/push ともに上記URL**ならOK。
 
 ---
 
-💡 ポイント
+# 2) Pages 要件（ユーザーサイト）
 
-* **ブランチが出ないのは「中身が空っぽ」だから**。
-* まず何かしらファイルをコミットして初めて `main` が選べます。
+ユーザーサイトは**リポジトリ直下に `index.html`** が必要。今の構成ならそのまま公開できます。
+Jekyll無効化（アンダースコア入りパス等の事故回避）に **`.nojekyll`** を置いておくと堅いです。
+
+```powershell
+# まだない場合のみ
+ni .nojekyll
+git add .nojekyll
+git commit -m "chore: add .nojekyll"
+```
 
 ---
 
-👉 ご質問：いまPCに **Git環境（gitコマンド）** ありますか？
-それとも **GitHub上で直接ファイルをアップロード**する方法の方が良いですか？
+# 3) 変なファイルを掃除（再掲）
 
-===========================
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
+文字化けしてた “t commit…qwqq” を消す（残っていれば）
 
-## 設定
+```powershell
+git rm -- "t commit*qwqq"
+git commit -m "chore: remove stray file"
+```
 
-git config --global user.name "keita"
-git config --global user.email "32783655+keita-lib@users.noreply.github.com"
+---
 
-## 確認
+# 4) Push（＝デプロイ）
 
-PS C:\Users\keita\projects\financial_website> git config user.name 
-keita
+```powershell
+git push origin main
+```
 
-PS C:\Users\keita\projects\financial_website> git config user.email
-32783655+keita-lib@users.noreply.github.com
+---
 
-## コミット
-PS C:\Users\keita\projects\financial_website> git commit -m "first commit"
-[master (root-commit) 4fb0b91] first commit
- 11 files changed, 993 insertions(+)
- create mode 100644 assets/app.js
- create mode 100644 assets/manifest.webmanifest
- create mode 100644 assets/styles.css
- create mode 100644 index.html
- create mode 100644 memo_for_git.txt
- create mode 100644 pages/faq.html
- create mode 100644 pages/founder.html
- create mode 100644 pages/founder_detail.html
- create mode 100644 pages/glossary.html
- create mode 100644 pages/simulator.html
- create mode 100644 sw.js
+# 5) GitHub Pages 設定チェック（1回だけ）
 
+GitHub → **Settings → Pages**
 
-PS C:\Users\keita\projects\financial_website> git branch -M main
-PS C:\Users\keita\projects\financial_website> git remote add origin https://github.com/keita-lib/life-money-site.git
-PS C:\Users\keita\projects\financial_website> git push -u origin main
+* **Source / Build**：*Deploy from a branch*
+* **Branch**：`main`
+* **Folder**：`/(root)`
 
+反映後、公開URLは **[https://keita-lib.github.io/](https://keita-lib.github.io/)**
 
-PS C:\Users\keita\projects\financial_website> git remote add origin https://github.com/keita-lib/life-money-site.git                     
-error: remote origin already exists.
-PS C:\Users\keita\projects\financial_website> git remote set-url origin https://github.com/keita-lib/life-money-site.git
-PS C:\Users\keita\projects\financial_website> git remote -v   #  確認：fetch/push 両方このURLになっていればOK
-origin  https://github.com/keita-lib/life-money-site.git (fetch)
-origin  https://github.com/keita-lib/life-money-site.git (push)
-PS C:\Users\keita\projects\financial_website> git push -u origin main
-info: please complete authentication in your browser...
-Enumerating objects: 15, done.
-Counting objects: 100% (15/15), done.
-Delta compression using up to 24 threads
-Compressing objects: 100% (11/11), done.
-Writing objects: 100% (15/15), 17.63 KiB | 8.82 MiB/s, done.
-Total 15 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
-To https://github.com/keita-lib/life-money-site.git
- * [new branch]      main -> main
-branch 'main' set up to track 'origin/main'.
-PS C:\Users\keita\projects\financial_website> 
-PS C:\Users\keita\projects\financial_website> 
-PS C:\Users\keita\projects\financial_website> git branch
-* main
-PS C:\Users\keita\projects\financial_website> git status
-On branch main
-Your branch is up to date with 'origin/main'.
+---
 
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-        modified:   memo_for_git.txt
+# 6) 旧 `life-money-site` からの転送（必要なら）
 
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-        "t commit\357\200\242git commit -m \357\200\242first commit\357\200\242qwqq"
+過去リンク/ブクマ対策。旧リポジトリ側の `index.html` を**即時リダイレクト**に差し替え：
 
-no changes added to commit (use "git add" and/or "git commit -a")
-PS C:\Users\keita\projects\financial_website> git remote set-url origin https://github.com/keita-lib/life-money-site.git
-PS C:\Users\keita\projects\financial_website> git remote -v
-origin  https://github.com/keita-lib/life-money-site.git (fetch)
-origin  https://github.com/keita-lib/life-money-site.git (push)
-PS C:\Users\keita\projects\financial_website> git push -u origin main
+```html
+<!doctype html><meta http-equiv="refresh" content="0; url=https://keita-lib.github.io/">
+<script>location.replace("https://keita-lib.github.io/")</script>
+```
+
+そのまま `main` にコミット&プッシュでOK。
+
+---
+
+# 7) よくある詰まり・即解答
+
+* **反映が見えない**：`index.html` が root 直下か／Pages設定が `main / (root)` かを再確認
+* **改行警告（CRLF/LF）**：
+
+  ```powershell
+  git config core.autocrlf true
+  ```
+* **PWAキャッシュが古い**：`sw.js` のキャッシュ名やバージョンを更新→再push（クライアント側はハードリロード）
+
+---
+
+# 8) 今後の固定ワークフロー（忘れにくい版）
+
+```powershell
+git status
+git add .
+git commit -m "feat: update site"
+git push origin main
+```
+
+---
+
+必要なら、**カスタムドメイン**（CNAME）や**Actionsによる自動テスト→Pagesデプロイ**の雛形もすぐ出します。
+次にやりたい運用（301転送の厳密化／PWA戦略／ドメイン設定など）を言ってください。プロ仕様で畳み掛けます。
