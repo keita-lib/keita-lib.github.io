@@ -35,7 +35,7 @@
         しかし、実際の人生設計では、毎年の追加投資やインフレ、資産運用のリスク、目標とするインカム（配当・利息）など、より多くの要素を考慮する必要があります。
       </p>
       <p>
-        <b>この「本格シミュレーション」ページでは、複数の運用モードや詳細なパラメータを設定し、資産とインカムの推移をより現実的にシミュレーションできます。</b>
+        <b>この「本格シミュレーション」ページでは、詳細なパラメータを設定し、資産とインカムの推移をより現実的にシミュレーションできます。</b>
         <br>
         目標達成までの道筋やリスクの幅、インフレ調整後の実質的な資産価値など、あなた自身のライフデザインに役立つ具体的な気づきを得ることができます。
       </p>
@@ -48,39 +48,7 @@
     <h1>本格シミュレーション</h1>
     <p class="muted">中央値（期待値）・ワースト（5%）・ベスト（95%）の三本線で、資産とインカムの軌道を可視化します。</p>
 
-    <!-- ▼ 説明：並行モード -->
-    <div class="callout">
-      <h3>並行モード（比率指定）とは？</h3>
-      <div class="desc">
-        Growth（値上がり狙い）と Income（配当・利息狙い）を <b>固定の比率</b>で同時運用する基本形です。<br>
-        <b>毎年の追加投資</b>も同じ比率で配分し、<b>リバランスON</b>なら年末に元の比率へ揃えます。
-      </div>
-      <ul class="tips">
-        <li>式（概念）：<br>
-          <code>Gₜ = (Gₜ₋₁ + 追加×比率) × (1 + r<sub>G</sub>)</code>，<br>
-          <code>Iₜ = (Iₜ₋₁ + 追加×(1-比率)) × (1 + r<sub>I</sub>)</code>，<br>
-          総資産 <code>Aₜ = Gₜ + Iₜ</code>，インカム <code>CFₜ = Iₜ × r<sub>I</sub></code></li>
-        <li>向いている人：<b>着実に増やしつつ配当も欲しい</b>、扱いをシンプルにしたい。</li>
-        <li>パラメータ：Growth比率・毎年リバランス・Growth/Income の年率・σ・インフレ。</li>
-      </ul>
-    </div>
-
-    <!-- ▼ 説明：二段ロケット -->
-    <details class="guide" open>
-      <summary><b class="badge">STEP 2</b>二段ロケット（全額切替）とは？</summary>
-      <div class="desc" style="margin-top:8px;">
-        最初は<b>全力でGrowth</b>に寄せて資産を膨らませ、<b>指定年数（Growthフェーズ）</b>が終わったら<b>資産をまるごとIncomeへ切替</b>してインカム重視に移行する戦略です。
-      </div>
-      <ul class="tips">
-        <li>式（概念）：<br>
-          フェーズ1（<code>y ≤ Y<sub>G</sub></code>）<code>Aₜ = (Aₜ₋₁ + 追加) × (1 + r<sub>G</sub>)</code>，<b>CF=0</b><br>
-          フェーズ2（切替後）<code>Aₜ = (Aₜ₋₁ + 追加) × (1 + r<sub>I</sub>)</code>，<code>CFₜ = Aₜ × r<sub>I</sub></code>
-        </li>
-        <li>向いている人：<b>目標までの到達スピードを優先</b>し、その後は安定キャッシュを取りに行きたい。</li>
-        <li>パラメータ：Growthフェーズ年数（切替タイミング）。</li>
-      </ul>
-    </details>
-
+    <!-- ▼ モード説明・選択UI削除済み ▼ -->
 
     <!-- KPI -->
     <div class="kpis" id="kpis">
@@ -90,53 +58,127 @@
       <div class="kpi"><b>最終年インカム（期待値）</b><span id="kpi-income">—</span></div>
     </div>
 
-    <div class="grid">
-      <!-- Controls -->
-      <div class="card">
-        <div class="section-title">モード選択</div>
-        <div class="mode" id="mode">
-          <label><input type="radio" name="mode" value="parallel" checked><span>並行モード（比率指定）</span></label>
-          <label><input type="radio" name="mode" value="rocket"><span>二段ロケット（全額切替）</span></label>
+    <div class="grid" style="grid-template-columns: 640px 1fr; gap:32px;">
+      <!-- パラメータ枠（左） -->
+      <div>
+        <div class="card" style="display:flex; flex-direction:column; gap:18px;">
+          <!-- 基本パラメータ -->
+          <div class="card" style="margin:0;">
+            <div class="section-title">基本パラメータ</div>
+            <div class="row">
+              <label>
+                初期資産（円）
+                <span class="help" title="いま手元にある投資可能な資産。最初に運用を始める元本です。">?</span>
+              </label>
+              <div class="dual" data-key="initial" data-type="int" data-min="0" data-max="2000000000" data-step="1000000"></div>
+            </div>
+            <div class="row">
+              <label>
+                追加投資（円/年）
+                <span class="help" title="毎年追加で投資する金額。給与などから投資に回す分です。">?</span>
+              </label>
+              <div class="dual" data-key="contrib" data-type="int" data-min="0" data-max="50000000" data-step="100000"></div>
+            </div>
+            <div class="row">
+              <label>
+                目標インカム（円/年）
+                <span class="help" title="利息・配当などで得たい年間キャッシュフローの目標額です。">?</span>
+              </label>
+              <div class="dual" data-key="target" data-type="int" data-min="0" data-max="50000000" data-step="100000"></div>
+            </div>
+          </div>
+
+          <!-- 運用パラメータ -->
+          <div class="card" style="margin:0;">
+            <div class="section-title">運用パラメータ</div>
+            <div class="row small">
+              <label>
+                期待リターン（%/年）
+                <span class="help" title="資産運用で年間に期待する平均的な増加率（値上がり分）です。">?</span>
+              </label>
+              <div class="dual" data-key="gret" data-type="float" data-min="-20" data-max="30" data-step="0.1"></div>
+            </div>
+            <div class="row small">
+              <label>
+                利回り（%/年）
+                <span class="help" title="資産から得られる年間の配当・利息の割合です。">?</span>
+              </label>
+              <div class="dual" data-key="iret" data-type="float" data-min="0" data-max="12" data-step="0.1"></div>
+            </div>
+            <div class="row small">
+              <label>
+                期間（年）
+                <span class="help" title="何年間シミュレーションするかの期間です。">?</span>
+              </label>
+              <div class="dual" data-key="years" data-type="int" data-min="5" data-max="40" data-step="1"></div>
+            </div>
+          </div>
+
+          <!-- 上級者向けパラメータ -->
+          <div class="card" style="margin:0;">
+            <div class="section-title">上級者向けパラメータ</div>
+            <div class="row small">
+              <label>
+                リターン標準偏差（%/年）
+                <span class="help" title="資産運用リターンの年ごとのばらつき（標準偏差）です。値が大きいほど上下にブレやすくなります。">?</span>
+              </label>
+              <div class="dual" data-key="sg" data-type="float" data-min="0" data-max="60" data-step="0.1"></div>
+            </div>
+            <div class="row small">
+              <label>
+                インカム標準偏差（%/年）
+                <span class="help" title="配当・利息収入の年ごとのばらつき（標準偏差）です。">?</span>
+              </label>
+              <div class="dual" data-key="si" data-type="float" data-min="0" data-max="40" data-step="0.1"></div>
+            </div>
+            <div class="row small">
+              <label>
+                モンテカルロ：パス数
+                <span class="help" title="ランダムなシミュレーションの試行回数。多いほど統計的に安定します。">?</span>
+              </label>
+              <div class="dual" data-key="paths" data-type="int" data-min="100" data-max="5000" data-step="100"></div>
+            </div>
+            <div class="row small">
+              <label>
+                乱数シード
+                <span class="help" title="シミュレーションの乱数を固定するための値。結果の再現性に使います。">?</span>
+              </label>
+              <div class="dual" data-key="seed" data-type="int" data-min="1" data-max="10000" data-step="1"></div>
+            </div>
+            <div class="row small">
+              <label>
+                インフレ率（%/年）
+                <span class="help" title="物価上昇によるお金の価値の減少率。資産の実質価値を調整します。">?</span>
+              </label>
+              <div class="dual" data-key="infl" data-type="float" data-min="0" data-max="5" data-step="0.1"></div>
+            </div>
+            <div class="row">
+              <label></label>
+              <label>
+                <input id="showReal" type="checkbox">
+                実質（インフレ調整）で表示
+                <span class="help" title="インフレ率を考慮して、資産やインカムの実質的な価値でグラフ表示します。">?</span>
+              </label>
+            </div>
+          </div>
         </div>
-
-        <div class="section-title">基本パラメータ</div>
-        <div class="row"><label>初期資産（円）<span class="help" title="いま手元にある投資可能な資産。">?</span></label><div class="dual" data-key="initial" data-type="int" data-min="0" data-max="2000000000" data-step="1000000"></div></div>
-        <div class="row"><label>毎年の追加投資（円/年）<span class="help" title="給与などから毎年投資に回す金額。">?</span></label><div class="dual" data-key="contrib" data-type="int" data-min="0" data-max="50000000" data-step="100000"></div></div>
-        <div class="row"><label>目標インカム（円/年）<span class="help" title="利息・配当だけで得たい年間キャッシュフロー。">?</span></label><div class="dual" data-key="target" data-type="int" data-min="0" data-max="50000000" data-step="100000"></div></div>
-
-        <div class="section-title">運用パラメータ</div>
-        <div class="row small"><label>Growth期待リターン（%/年）</label><div class="dual" data-key="gret" data-type="float" data-min="-20" data-max="30" data-step="0.5"></div></div>
-        <div class="row small"><label>Income利回り（%/年）</label><div class="dual" data-key="iret" data-type="float" data-min="0" data-max="12" data-step="0.1"></div></div>
-        <div class="row small"><label>インフレ率（%/年）</label><div class="dual" data-key="infl" data-type="float" data-min="0" data-max="5" data-step="0.1"></div></div>
-
-        <div class="section-title">並行モード設定</div>
-        <div class="row small"><label>Growth比率（%）</label><div class="dual" data-key="pgw" data-type="float" data-min="0" data-max="100" data-step="5"></div></div>
-        <div class="row"><label></label><label><input id="rebalance" type="checkbox" checked> 毎年リバランス（比率維持）</label></div>
-
-        <div class="section-title">ロケット設定</div>
-        <div class="row small"><label>Growthフェーズ年数</label><div class="dual" data-key="gy" data-type="int" data-min="0" data-max="20" data-step="1"></div></div>
-
-        <div class="section-title">期間・ボラティリティ</div>
-        <div class="row small"><label>シミュレーション年数（年）</label><div class="dual" data-key="years" data-type="int" data-min="5" data-max="40" data-step="1"></div></div>
-        <div class="row small"><label>Growth σ（%/年）</label><div class="dual" data-key="sg" data-type="float" data-min="0" data-max="60" data-step="1"></div></div>
-        <div class="row small"><label>Income σ（%/年）</label><div class="dual" data-key="si" data-type="float" data-min="0" data-max="40" data-step="1"></div></div>
-        <div class="row small"><label>モンテカルロ：パス数</label><div class="dual" data-key="paths" data-type="int" data-min="100" data-max="5000" data-step="100"></div></div>
-        <div class="row small"><label>乱数シード</label><div class="dual" data-key="seed" data-type="int" data-min="1" data-max="10000" data-step="1"></div></div>
-
-        <div class="row"><label></label><label><input id="showReal" type="checkbox"> 実質（インフレ調整）で表示</label></div>
       </div>
-
-      <!-- Charts -->
-      <div class="card">
-        <div class="section-title">資産の推移（三本線）</div>
-        <canvas id="assetsChart" height="220"></canvas>
-        <div class="section-title" style="margin-top:18px;">インカムの推移（三本線）</div>
-        <canvas id="incomeChart" height="220"></canvas>
-        <p class="muted" style="margin-top:10px;">中央線＝期待値、上＝95%ベスト、下＝5%ワースト。教育目的の簡易モデル（年次正規リターン）です。</p>
+      <!-- グラフ枠（右） -->
+      <div>
+        <div class="card" style="padding:24px 24px 18px 24px; max-width:1150px; margin:0 auto;">
+          <div class="section-title" style="font-size:18px;">資産の推移（三本線）</div>
+          <canvas id="assetsChart" height="480"></canvas>
+          <div class="section-title" style="margin-top:32px; font-size:18px;">インカムの推移（三本線）</div>
+          <canvas id="incomeChart" height="320"></canvas>
+          <p class="muted" style="margin-top:18px;">中央線＝期待値、上＝95%ベスト、下＝5%ワースト。教育目的の簡易モデル（年次正規リターン）です。</p>
+        </div>
       </div>
     </div>
-  </div>
-
+    <div style="margin-top:18px; display:flex; justify-content:center; gap:48px;">
+      <a href="/index.html" class="btn" style="font-size:18px;">← 1分でわかる「複利」体験</a>
+      <a href="/pages/simulator_fund.html" class="btn" style="font-size:18px;">次のステップへ →</a>
+    </div>
+  </div> <!-- .wrapの閉じタグ -->
   <!-- ▼ フッター追加 ▼ -->
   <footer>
     <div class="container">
@@ -147,18 +189,37 @@
 <script>
 /* ========== 初期状態 ========== */
 const state = {
-  mode:'parallel',
   initial:40000000,
   contrib:2000000,
   target:5000000,
-  gret:8.0, iret:6.0, infl:1.0,
-  pgw:70.0, rebalance:true,
-  gy:5, years:20,
-  sg:18.0, si:8.0, paths:1000, seed:42,
+  gret:8.0,
+  iret:4.0,
+  infl:1.0,
+  years:20,
+  sg:18.0,
+  si:8.0,
+  paths:1000,
+  seed:42,
   showReal:false,
 };
 const $ = (q)=>document.querySelector(q);
 let assetsChart, incomeChart;
+
+/* ========== localStorageによるパラメータ記憶 ========== */
+const STORAGE_KEY = 'simulator_state';
+function saveState(){
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+}
+function loadState(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const obj = JSON.parse(raw);
+    Object.keys(state).forEach(k=>{
+      if (typeof obj[k] !== 'undefined') state[k] = obj[k];
+    });
+  } catch(e){}
+}
 
 /* ========== RNG & Normal ========== */
 function mulberry32(a){ return function(){ let t=a+=0x6D2B79F5; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
@@ -179,7 +240,17 @@ function buildDual(el, value){
 
   let syncing=false;
   const clamp = (v)=>{ v=(type==='int')?parseInt(v||0,10):parseFloat(v||0); if(isNaN(v)) v=0; return Math.max(min,Math.min(max,v)); };
-  const sync = (src,dst)=>{ if(syncing) return; syncing=true; const v=clamp(src.value); if(src.value!==String(v)) src.value=v; if(dst.value!==String(v)) dst.value=v; state[key]=(type==='int')?parseInt(v,10):parseFloat(v); queueUpdate(); syncing=false; };
+  const sync = (src,dst)=>{
+    if(syncing) return;
+    syncing=true;
+    const v=clamp(src.value);
+    if(src.value!==String(v)) src.value=v;
+    if(dst.value!==String(v)) dst.value=v;
+    state[key]=(type==='int')?parseInt(v,10):parseFloat(v);
+    saveState(); // ← 変更時に保存
+    queueUpdate();
+    syncing=false;
+  };
 
   r.addEventListener('input',()=>sync(r,n));
   n.addEventListener('input',()=>sync(n,r));
@@ -190,19 +261,12 @@ function buildDual(el, value){
 /* ========== 核心ロジック ========== */
 function simulateDeterministic(p){
   const years=[], A=[], I=[];
-  let assets=p.initial_assets, gw=p.parallel_growth_weight, iw=1-gw;
-  let gAsset=assets*gw, iAsset=assets*iw;
+  let assets=p.initial_assets;
   for(let y=1;y<=p.max_years;y++){
     years.push(y);
-    if(p.mode==='rocket'){
-      const g=(y<=p.growth_years), r=g?p.growth_return:p.income_return, start=assets+p.annual_contribution;
-      assets=start*(1+r); A.push(assets); I.push(g?0:start*p.income_return);
-    }else{
-      const gC=p.annual_contribution*gw, iC=p.annual_contribution*iw;
-      gAsset=(gAsset+gC)*(1+p.growth_return); iAsset=(iAsset+iC)*(1+p.income_return);
-      const total=gAsset+iAsset; if(p.rebalance){ gAsset=total*gw; iAsset=total*iw; }
-      A.push(total); I.push(iAsset*p.income_return);
-    }
+    assets=(assets+p.annual_contribution)*(1+p.growth_return);
+    A.push(assets);
+    I.push(assets*p.income_return);
   }
   return {years, assets:A, income:I};
 }
@@ -211,22 +275,12 @@ function simulateMonteCarlo(p, sigmaG, sigmaI, paths, seed){
   const yrs=p.max_years, rng=mulberry32(seed);
   const A=Array.from({length:yrs},()=>[]), Inc=Array.from({length:yrs},()=>[]);
   for(let k=0;k<paths;k++){
-    if(p.mode==='rocket'){
-      let assets=p.initial_assets;
-      for(let y=1;y<=yrs;y++){
-        const g=(y<=p.growth_years), mu=g?p.growth_return:p.income_return, sg=g?sigmaG:sigmaI, r=mu+randn(rng)*sg;
-        const start=assets+p.annual_contribution; assets=start*(1+r);
-        A[y-1].push(assets); Inc[y-1].push(g?0:start*p.income_return);
-      }
-    }else{
-      let gw=p.parallel_growth_weight, iw=1-gw, gAsset=p.initial_assets*gw, iAsset=p.initial_assets*iw;
-      for(let y=1;y<=yrs;y++){
-        const rG=p.growth_return+randn(rng)*sigmaG, rI=p.income_return+randn(rng)*sigmaI;
-        gAsset=(gAsset+p.annual_contribution*gw)*(1+rG);
-        iAsset=(iAsset+p.annual_contribution*iw)*(1+rI);
-        const total=gAsset+iAsset; if(p.rebalance){ gAsset=total*gw; iAsset=total*iw; }
-        A[y-1].push(total); Inc[y-1].push(iAsset*p.income_return);
-      }
+    let assets=p.initial_assets;
+    for(let y=1;y<=yrs;y++){
+      const rG=p.growth_return+randn(rng)*sigmaG;
+      assets=(assets+p.annual_contribution)*(1+rG);
+      A[y-1].push(assets);
+      Inc[y-1].push(assets*p.income_return);
     }
   }
   const pct=(arr,q)=>{ const s=[...arr].sort((a,b)=>a-b); const i=Math.max(0,Math.min(s.length-1,Math.floor(q/100*(s.length-1)))); return s[i]; };
@@ -237,8 +291,45 @@ function simulateMonteCarlo(p, sigmaG, sigmaI, paths, seed){
 
 /* ========== チャート ========== */
 function buildCharts(){
-  const base={ responsive:true, maintainAspectRatio:false, animation:false,
-    scales:{ y:{ ticks:{ callback:(v)=>v.toLocaleString('ja-JP') } } } };
+  const base={
+    responsive:true,
+    maintainAspectRatio:false,
+    animation:false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        labels: {
+          font: { size: 20, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" },
+          boxWidth: 28,
+          padding: 18
+        }
+      },
+      title: {
+        display: false
+      }
+    },
+    scales: {
+      x: {
+        title: { display: true, text: '年数', font: { size: 20, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" } },
+        ticks: {
+          font: { size: 18, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" },
+          callback: (v, i, arr) => {
+            // Yを除去して数値だけ表示
+            if (typeof v === 'string' && v.startsWith('Y')) return v.slice(1);
+            return v;
+          }
+        }
+      },
+      y: {
+        title: { display: true, text: '金額（円）', font: { size: 20, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" } },
+        ticks: {
+          font: { size: 18, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" },
+          callback: (v)=>v.toLocaleString('ja-JP')
+        }
+      }
+    }
+  };
   assetsChart=new Chart(document.getElementById('assetsChart'),{ type:'line', data:{labels:[],datasets:[]}, options:base });
   incomeChart=new Chart(document.getElementById('incomeChart'),{ type:'line', data:{labels:[],datasets:[]}, options:base });
 }
@@ -258,14 +349,10 @@ function updateAll(){
     initial_assets: state.initial,
     annual_contribution: state.contrib,
     target_income: state.target,
-    growth_years: state.gy,
     growth_return: state.gret/100,
     income_return: state.iret/100,
     inflation: state.infl/100,
-    max_years: state.years,
-    mode: state.mode,
-    parallel_growth_weight: state.pgw/100,
-    rebalance: state.rebalance
+    max_years: state.years
   };
 
   const det = simulateDeterministic(p);
@@ -300,15 +387,13 @@ function queueUpdate(){ clearTimeout(queueUpdate.t); queueUpdate.t=setTimeout(up
 
 /* ========== 配線 & 初期化 ========== */
 window.addEventListener('DOMContentLoaded', ()=>{
+  loadState(); // ← ページ表示時に復元
   // dual inputs
   document.querySelectorAll('.dual').forEach(el=> buildDual(el, state[el.dataset.key]) );
 
-  // mode
-  document.querySelectorAll('input[name="mode"]').forEach(r=>{
-    r.addEventListener('change', e=>{ state.mode=e.target.value; queueUpdate(); });
-  });
+  // モード選択・リバランス削除
+
   // toggles
-  $('#rebalance').addEventListener('change', e=>{ state.rebalance=e.target.checked; queueUpdate(); });
   $('#showReal').addEventListener('change', e=>{ state.showReal=e.target.checked; queueUpdate(); });
 
   // charts once
@@ -319,4 +404,5 @@ window.addEventListener('DOMContentLoaded', ()=>{
 <script src="../assets/simulator.js"></script>
 
 </body>
+</html>
 </html>

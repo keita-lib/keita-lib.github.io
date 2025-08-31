@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ETF・インデックス投資の効率的フロンティア | Life×Money</title>
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="stylesheet" href="../assets/simulator.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="/index.html">
+        <span style="font-weight:700;font-size:1.2rem;color:var(--accent)">Life×Money</span>
+      </a>
+      <nav>
+        <a class="btn ghost" href="/pages/founder.html">創設者の想い</a>
+        <a class="btn ghost" href="/pages/simulator.html">シミュレーション</a>
+        <a class="btn ghost" href="/pages/glossary.html">やさしい用語</a>
+        <a class="btn ghost" href="/pages/faq.html">FAQ</a>
+      </nav>
+    </div>
+  </header>
+  <div class="wrap">
+    <section class="muted" style="margin-bottom:1.5rem;">
+      <h2 style="font-size:1.3rem;margin-bottom:.7rem;">ETF・インデックス投資の効率的フロンティアとシャープレシオ最大化</h2>
+      <p>
+        インデックス投資やテーマ性を持ったETF・投資信託を組み合わせることで、リスクを抑えつつリターンを最大化することが可能です。
+        <br>
+        <b>このページでは、複数のETFやインデックスファンドの「相関係数」を考慮し、ポートフォリオのリスク（標準偏差）を低減しながらリターンを得る方法をシミュレーションします。</b>
+      </p>
+      <p>
+        代表的なインデックスETFの相関係数データを示し、各ETFの割合を調整することでポートフォリオ全体のシャープレシオ（リスクあたりのリターン）がどのように変化するかを体験できます。
+        <br>
+        <b>目指すべきは「効率的フロンティア」上のポートフォリオ、すなわちシャープレシオの最大化です。</b>
+      </p>
+      <p>
+        <b>ETFの組み合わせによるリスク分散とリターンの最適化を、ぜひ体験してください。</b>
+      </p>
+    </section>
+
+    <!-- 理論解説セクション追加 -->
+    <section class="callout" style="margin-bottom:2rem;">
+      <h3>効率的フロンティア・シャープレシオ・分散投資の理論（中学生でもわかる！）</h3>
+      <div class="desc">
+        <ul>
+          <li><b>効率的フロンティアとは？</b><br>
+            いろいろな投資の組み合わせ（ポートフォリオ）の中で、「同じリスクなら一番リターンが高い」「同じリターンなら一番リスクが低い」ものだけを集めた線（グラフ）です。<br>
+            つまり「ムダのない最強の組み合わせ」を探す考え方です。
+          </li>
+          <li><b>シャープレシオとは？</b><br>
+            「リスク1あたり、どれだけリターンが得られるか」を表す指標です。<br>
+            <b>計算式：</b> <code>シャープレシオ = (期待リターン - 無リスク利率) ÷ リスク</code><br>
+            数字が大きいほど「効率よく増やせる」投資です。
+          </li>
+          <li><b>分散投資とは？</b><br>
+            いろいろな種類の投資（株・債券・日本・米国など）を組み合わせることで、値動きがバラバラになり、全体のリスク（ブレ）が小さくなります。<br>
+            特に「逆相関（マイナスの相関係数）」の組み合わせがあると、片方が下がってももう片方が上がるので、全体の安定感が増します。
+          </li>
+          <li><b>ポートフォリオの期待リターン・リスクの計算方法</b><br>
+            <b>期待リターン：</b> 各ETFのリターン × 割合 を全部足す<br>
+            <code>期待リターン = ETF1の割合×リターン + ETF2の割合×リターン + ...</code><br>
+            <b>リスク（標準偏差）：</b> 各ETFのリスクと相関係数を使って計算します。<br>
+            <code>
+              リスク² = Σ(割合i × 割合j × リスクi × リスクj × 相関係数ij)<br>
+              （iとjはETFの組み合わせ全部）
+            </code>
+            <br>
+            最後に平方根（√）を取ると全体のリスクになります。
+          </li>
+          <li><b>手計算の例（2つのETFの場合）</b><br>
+            例えばA（米国株）とB（米国債券）を50%ずつ組み合わせる場合：<br>
+            <code>
+              期待リターン = 0.5×7% + 0.5×2.5% = 4.75%<br>
+              リスク² = 0.5²×15² + 0.5²×5² + 2×0.5×0.5×15×5×相関係数<br>
+              （相関係数が-0.25なら）<br>
+              リスク² = 56.25 + 6.25 + 2×0.25×75×(-0.25) = 62.5 - 9.375 = 53.125<br>
+              リスク = √53.125 ≒ 7.29%<br>
+              シャープレシオ = (4.75 - 0.5) ÷ 7.29 ≒ 0.58
+            </code>
+            <br>
+            このように、組み合わせや相関係数によってリスクが減ることがわかります！
+          </li>
+        </ul>
+      </div>
+      <div class="tips">
+        <b>ポイント：</b>
+        <ul>
+          <li>「効率的フロンティア」はグラフ上で一番上の線（最強の組み合わせ）</li>
+          <li>「シャープレシオ」が大きいほど、リスクの割にリターンが大きい</li>
+          <li>逆相関のETFを組み合わせると、リスクがグッと減る</li>
+          <li>自分で割合や相関係数を変えて、最適なポートフォリオを探してみよう！</li>
+        </ul>
+      </div>
+    </section>
+
+    <h1>ETFポートフォリオ・シミュレーション</h1>
+    <p class="muted">ETFの組み合わせ比率・相関係数を調整して、期待リターン・リスク・シャープレシオ・効率的フロンティアを体験できます。</p>
+
+    <div class="card" style="max-width:1920px; margin:0 auto;">
+      <div class="section-title">ETF構成比率・リターン・リスク・相関係数</div>
+      <table style="width:1920px;margin-bottom:18px;">
+        <thead>
+          <tr>
+            <th>ETF</th>
+            <th>代表的な銘柄</th>
+            <th>比率（%）</th>
+            <th>期待リターン（%/年）</th>
+            <th>リスク（標準偏差 %/年）</th>
+          </tr>
+        </thead>
+        <tbody id="etf-table">
+          <!-- JSでETF行を生成 -->
+        </tbody>
+      </table>
+      <div class="section-title">ETF間の相関係数</div>
+      <table style="width:1920px;margin-bottom:18px;">
+        <thead>
+          <tr>
+            <th></th>
+            <th>米国株</th>
+            <th>先進国株</th>
+            <th>新興国株</th>
+            <th>全世界株</th>
+            <th>日本株</th>
+            <th>債券</th>
+            <th>超長期米国債</th>
+            <th>日本国債（短期）</th>
+            <th>日本国債（長期）</th>
+          </tr>
+        </thead>
+        <tbody id="corr-table">
+          <!-- JSで相関係数行を生成 -->
+        </tbody>
+      </table>
+      <div class="section-title">ポートフォリオ期待値・リスク・シャープレシオ</div>
+      <div id="portfolio-kpi" style="font-size:1.2rem; margin-bottom:18px;"></div>
+      <canvas id="frontierChart" height="320"></canvas>
+      <p class="muted" style="margin-top:10px;">効率的フロンティア上のシャープレシオ最大化を目指しましょう。</p>
+    </div>
+
+    <div style="margin-top:18px; display:flex; justify-content:center; gap:48px;">
+      <a href="/pages/simulator.html" class="btn" style="font-size:18px;">← 本格シミュレーション</a>
+      <a href="/pages/glossary.html" class="btn" style="font-size:18px;">次のページ →</a>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <p>© <span id="y"></span> Life×Money — 金融リテラシー×ライフデザイン</p>
+    </div>
+  </footer>
+
+<script>
+const etfs = [
+  { name: "米国株", key: "us", ret: 7.0, risk: 15.0, ratio: 25, ticker: "SBI・V・S&P500（投信）/ VOO（ETF）" },
+  { name: "先進国株", key: "dev", ret: 6.0, risk: 14.0, ratio: 10, ticker: "eMAXIS Slim 先進国株式（投信）/ VEA（ETF）" },
+  { name: "新興国株", key: "em", ret: 8.0, risk: 20.0, ratio: 10, ticker: "eMAXIS Slim 新興国株式（投信）/ VWO（ETF）" },
+  { name: "全世界株", key: "vt", ret: 6.5, risk: 13.0, ratio: 10, ticker: "SBI・V・全世界株式（投信）/ VT（ETF）" },
+  { name: "日本株", key: "jp", ret: 5.0, risk: 16.0, ratio: 10, ticker: "eMAXIS Slim 国内株式（TOPIX）/ 1306（ETF）" },
+  { name: "米国債券", key: "bond", ret: 2.5, risk: 5.0, ratio: 10, ticker: "SBI・V・米国債券（投信）/ AGG（ETF）" },
+  { name: "超長期米国債", key: "edv", ret: 3.0, risk: 18.0, ratio: 5, ticker: "EDV（ETF）" },
+  { name: "日本国債（短期）", key: "jgb_s", ret: 0.2, risk: 1.0, ratio: 10, ticker: "eMAXIS Slim 国内債券（投信）/ 2510（ETF）" },
+  { name: "日本国債（長期）", key: "jgb_l", ret: 0.5, risk: 4.0, ratio: 10, ticker: "eMAXIS Slim 国内債券（投信）/ 2511（ETF）" }
+];
+
+// 相関係数（参考値、債券は株式と弱い逆相関、米国債と日本債券も弱い相関）
+const corr = {
+  us:    { us:1.00, dev:0.85, em:0.75, vt:0.95, jp:0.70, bond:0.20, edv:-0.25, jgb_s:-0.10, jgb_l:-0.15 },
+  dev:   { us:0.85, dev:1.00, em:0.80, vt:0.90, jp:0.75, bond:0.15, edv:-0.20, jgb_s:-0.08, jgb_l:-0.12 },
+  em:    { us:0.75, dev:0.80, em:1.00, vt:0.85, jp:0.60, bond:0.10, edv:-0.10, jgb_s:-0.05, jgb_l:-0.08 },
+  vt:    { us:0.95, dev:0.90, em:0.85, vt:1.00, jp:0.80, bond:0.18, edv:-0.22, jgb_s:-0.09, jgb_l:-0.13 },
+  jp:    { us:0.70, dev:0.75, em:0.60, vt:0.80, jp:1.00, bond:-0.10, edv:-0.15, jgb_s:0.15, jgb_l:0.20 },
+  bond:  { us:0.20, dev:0.15, em:0.10, vt:0.18, jp:-0.10, bond:1.00, edv:0.80, jgb_s:0.25, jgb_l:0.30 },
+  edv:   { us:-0.25, dev:-0.20, em:-0.10, vt:-0.22, jp:-0.15, bond:0.80, edv:1.00, jgb_s:0.18, jgb_l:0.22 },
+  jgb_s: { us:-0.10, dev:-0.08, em:-0.05, vt:-0.09, jp:0.15, bond:0.25, edv:0.18, jgb_s:1.00, jgb_l:0.60 },
+  jgb_l: { us:-0.15, dev:-0.12, em:-0.08, vt:-0.13, jp:0.20, bond:0.30, edv:0.22, jgb_s:0.60, jgb_l:1.00 }
+};
+const rf = 0.5; // 無リスク利率（シャープレシオ計算用）
+
+function renderETFTable() {
+  const tbody = document.getElementById('etf-table');
+  tbody.innerHTML = '';
+  etfs.forEach((etf, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${etf.name}</td>
+      <td>${etf.ticker}</td>
+      <td>
+        <input type="number" min="0" max="100" step="1" value="${etf.ratio}" style="width:60px;" data-idx="${i}" class="ratio-input"> %
+      </td>
+      <td>
+        <input type="number" min="0" max="20" step="0.1" value="${etf.ret}" style="width:60px;" data-idx="${i}" class="ret-input"> %
+      </td>
+      <td>
+        <input type="number" min="0" max="30" step="0.1" value="${etf.risk}" style="width:60px;" data-idx="${i}" class="risk-input"> %
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+function renderCorrTable() {
+  const tbody = document.getElementById('corr-table');
+  tbody.innerHTML = '';
+  etfs.forEach((rowEtf, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${rowEtf.name}</td>` +
+      etfs.map((colEtf, j) => {
+        const val = corr[rowEtf.key][colEtf.key];
+        if (i === j) {
+          return `<td style="background:#f3f4f6;">1.00</td>`;
+        }
+        return `<td><input type="number" min="-1" max="1" step="0.01" value="${val}" style="width:60px;" data-row="${rowEtf.key}" data-col="${colEtf.key}" class="corr-input"></td>`;
+      }).join('');
+    tbody.appendChild(tr);
+  });
+}
+
+function calcPortfolio() {
+  // 比率合計100%に正規化
+  let total = etfs.reduce((s,e)=>s+Number(e.ratio),0);
+  if (total === 0) total = 1;
+  const w = etfs.map(e=>Number(e.ratio)/total);
+  // 期待リターン
+  const pret = etfs.reduce((s,e,i)=>s+w[i]*Number(e.ret),0);
+  // 分散
+  let varp = 0;
+  for(let i=0;i<etfs.length;i++){
+    for(let j=0;j<etfs.length;j++){
+      varp += w[i]*w[j]*Number(etfs[i].risk)*Number(etfs[j].risk)*corr[etfs[i].key][etfs[j].key]/100/100;
+    }
+  }
+  const prisk = Math.sqrt(varp)*100;
+  // シャープレシオ
+  const sharp = (pret - rf) / prisk;
+  return { pret, prisk, sharp };
+}
+
+function updateAll() {
+  renderETFTable();
+  renderCorrTable();
+  const kpi = calcPortfolio();
+  document.getElementById('portfolio-kpi').innerHTML =
+    `<b>期待リターン：</b> ${kpi.pret.toFixed(2)} %/年　<b>リスク：</b> ${kpi.prisk.toFixed(2)} %/年　<b>シャープレシオ：</b> ${kpi.sharp.toFixed(2)}`;
+
+  // 効率的フロンティア（比率を動かしてシャープレシオ最大化を体験）
+  const points = [];
+  for(let x=0;x<=100;x+=5){
+    etfs[0].ratio = x;
+    etfs[1].ratio = Math.max(0, 100-x-etfs[2].ratio-etfs[3].ratio);
+    const k = calcPortfolio();
+    points.push({ret:k.pret, risk:k.prisk, sharp:k.sharp});
+  }
+  // 元に戻す
+  etfs[0].ratio = Number(document.querySelector('.ratio-input[data-idx="0"]').value);
+  etfs[1].ratio = Number(document.querySelector('.ratio-input[data-idx="1"]').value);
+
+  const ctx = document.getElementById('frontierChart').getContext('2d');
+  if(window.frontierChart) window.frontierChart.destroy();
+  window.frontierChart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        label: '効率的フロンティア',
+        data: points.map(p=>({x:p.risk, y:p.ret})),
+        borderColor: '#2563eb',
+        backgroundColor: '#60a5fa',
+        showLine: true,
+        pointRadius: 4,
+        tension: 0.2
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          title: { display:true, text:'リスク（標準偏差 %/年）', font:{size:16, family:"Meiryo, 'Yu Gothic', 'sans-serif'"} },
+          min: 0, max: 25
+        },
+        y: {
+          title: { display:true, text:'期待リターン（%/年）', font:{size:16, family:"Meiryo, 'Yu Gothic', 'sans-serif'"} },
+          min: 0, max: 12
+        }
+      }
+    }
+  });
+}
+
+// イベント配線
+function attachEvents() {
+  document.getElementById('etf-table').addEventListener('input', e=>{
+    if(e.target.classList.contains('ratio-input')){
+      const idx = Number(e.target.dataset.idx);
+      etfs[idx].ratio = Number(e.target.value);
+      updateAll();
+    }
+    if(e.target.classList.contains('ret-input')){
+      const idx = Number(e.target.dataset.idx);
+      etfs[idx].ret = Number(e.target.value);
+      updateAll();
+    }
+    if(e.target.classList.contains('risk-input')){
+      const idx = Number(e.target.dataset.idx);
+      etfs[idx].risk = Number(e.target.value);
+      updateAll();
+    }
+  });
+  document.getElementById('corr-table').addEventListener('input', e=>{
+    if(e.target.classList.contains('corr-input')){
+      const row = e.target.dataset.row;
+      const col = e.target.dataset.col;
+      corr[row][col] = Number(e.target.value);
+      corr[col][row] = Number(e.target.value); // 対称に
+      updateAll();
+    }
+  });
+}
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  renderETFTable();
+  renderCorrTable();
+  updateAll();
+  attachEvents();
+});
+</script>
+</body>
+</html>
