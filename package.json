@@ -1,0 +1,26 @@
+{
+  "name": "financial_website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keita-lib/keita-lib.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/keita-lib/keita-lib.github.io/issues"
+  },
+  "homepage": "https://github.com/keita-lib/keita-lib.github.io#readme",
+  "dependencies": {
+    "@google-cloud/vertexai": "^1.10.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0"
+  }
+}

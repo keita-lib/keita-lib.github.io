@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI金融セラピスト — Life×Money</title>
+  <meta name="description" content="AIの金融セラピストが、あなたのお金の悩みや不安に寄り添います。" />
+  <meta name="theme-color" content="#0b2240" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192.png" />
+  <link rel="manifest" href="/assets/manifest.webmanifest" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+  <link rel="stylesheet" href="/assets/therapist.css" />
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="/index.html">
+        <span style="font-weight:700;font-size:1.2rem;color:var(--accent)">Life×Money</span>
+      </a>
+      <nav>
+        <a class="btn ghost" href="/pages/founder.html">創設者の想い</a>
+        <a class="btn ghost" href="/pages/simulator.html">シミュレーション</a>
+        <a class="btn ghost" href="/pages/glossary.html">やさしい用語</a>
+        <a class="btn ghost" href="/pages/faq.html">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="therapist-container">
+    <div class="chat-area">
+      <div class="chat-header">
+        <h2>AI金融セラピスト</h2>
+      </div>
+      <div id="chat-history" class="chat-history">
+        <div class="message ai-message">
+          <p>こんにちは。お金について、どんなことが気になっていますか？漠然とした不安や、誰にも言えなかったことでも、安心してお話しください。</p>
+        </div>
+      </div>
+      <form id="chat-form" class="chat-input-form">
+        <input type="text" id="user-input" placeholder="メッセージを入力..." autocomplete="off">
+        <button type="submit">送信</button>
+      </form>
+    </div>
+
+    <div class="concerns-area">
+      <div class="concerns-panel">
+        <h2>みんなのお悩み</h2>
+        <ul id="concerns-list" class="concerns-list">
+          <li>将来、お金が足りるか漠然と不安...</li>
+          <li>投資に興味があるけど、何から始めたらいいかわからない。</li>
+          <li>周りの人がどれくらい貯金しているのか気になる。</li>
+          <li>自分に合った節約方法が見つからない。</li>
+          <li>NISAやiDeCo、言葉は聞くけど違いがよくわからない。</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="y"></span> Life×Money — 金融リテラシー×ライフデザイン</p>
+    </div>
+  </footer>
+
+  <script>
+    // フッターの年を更新
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+  <script defer src="/assets/therapist.js"></script>
+</body>
+</html>

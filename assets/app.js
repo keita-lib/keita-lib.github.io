@@ -61,7 +61,26 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillText(text, left + padX, top + h/2);
     }
 
-    // ラインチャート描画（素のCanvas） — 横軸に年数ラベルを追加
+    // キリの良いY軸最大値を計算するヘルパー
+function getNiceYMax(maxValue) {
+    if (maxValue <= 0) return 10; // 0や負の値の場合はデフォルト値を返す
+    const exponent = Math.floor(Math.log10(maxValue));
+    const powerOf10 = Math.pow(10, exponent);
+    const mostSignificantDigit = Math.ceil(maxValue / powerOf10);
+
+    // 1, 2, 5のステップに正規化
+    if (mostSignificantDigit > 5) {
+        return 10 * powerOf10;
+    } else if (mostSignificantDigit > 2) {
+        return 5 * powerOf10;
+    } else if (mostSignificantDigit > 1) {
+        return 2 * powerOf10;
+    } else {
+        return 1 * powerOf10;
+    }
+}
+
+// ラインチャート描画（素のCanvas） — 横軸に年数ラベルを追加
   function drawChart(principal, rate, years) {
     if (!canvas) return;
     const dpr = window.devicePixelRatio || 1;
@@ -77,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, cssW, cssH);
 
-    const padL = 32, padT = 18, padR = 18, padB = 36;
+    const padL = 60, padT = 18, padR = 18, padB = 36; // 左パディングを広げる
     const W = cssW - padL - padR;
     const H = cssH - padT - padB;
 
@@ -90,6 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (fv > maxV) maxV = fv;
     }
 
+    const niceMaxV = getNiceYMax(maxV); // キリの良い最大値を取得
+
     // 軸
     ctx.strokeStyle = 'rgba(16,42,77,.3)';
     ctx.lineWidth = 1;
@@ -101,17 +122,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Y目盛り
     ctx.fillStyle = 'rgba(16,42,77,.55)';
     ctx.font = '12px system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans JP", sans-serif';
-    const yTicks = 3, yenFmt = v => `¥${yen.format(Math.round(v))}`;
+    ctx.textAlign = 'right'; // 右揃えに変更
+    const yTicks = 5;
+    const yenFmt = v => {
+        if (v >= 100000000) return `${Math.round(v/100000000)}億円`;
+        if (v >= 10000) return `${Math.round(v/10000)}万円`;
+        return `¥${yen.format(Math.round(v))}`;
+    };
+
     for (let t=0; t<=yTicks; t++){
-        const v = maxV * t / yTicks;
+        const v = niceMaxV * t / yTicks;
         const yPos = cssH - padB - (H * t / yTicks);
-        ctx.fillText(yenFmt(v), 8, yPos+4);
+        ctx.fillText(yenFmt(v), padL - 8, yPos + 4); // 描画位置調整
         ctx.strokeStyle = 'rgba(16,42,77,.08)';
         ctx.beginPath(); ctx.moveTo(padL, yPos); ctx.lineTo(cssW - padR, yPos); ctx.stroke();
     }
 
     // X目盛り（年数）
-    const maxXTicks = 6;
+        const maxXTicks = 10;
     const step = Math.max(1, Math.ceil(years / maxXTicks));
     ctx.fillStyle = 'rgba(16,42,77,.65)';
     ctx.textAlign = 'center';
@@ -123,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.beginPath(); ctx.moveTo(xPix, yBase); ctx.lineTo(xPix, padT); ctx.stroke();
         ctx.fillText(`${i}年`, xPix, yBase + 6);
     }
-    if (years % step !== 0) {
+    if (years > 0 && years % step !== 0) { // 0年の時は描画しない
         ctx.fillText(`${years}年`, padL + W, cssH - padB + 6);
     }
 
@@ -133,14 +161,14 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.beginPath();
     for (let i=0; i<xs.length; i++){
         const xPix = padL + (W * xs[i] / (years || 1));
-        const yPix = cssH - padB - (H * (ys[i]/maxV));
+        const yPix = cssH - padB - (H * (ys[i]/niceMaxV)); // niceMaxV を使用
         if (i===0) ctx.moveTo(xPix, yPix); else ctx.lineTo(xPix, yPix);
     }
     ctx.stroke();
 
     // 現在年マーカー
     const xNow = padL + (W * years / (years || 1));
-    const yNow = cssH - padB - (H * (ys[ys.length-1]/maxV));
+    const yNow = cssH - padB - (H * (ys[ys.length-1]/niceMaxV)); // niceMaxV を使用
     ctx.fillStyle = '#fff';
     ctx.strokeStyle = 'rgba(16,42,77,.6)';
     ctx.beginPath(); ctx.arc(xNow, yNow, 4, 0, Math.PI*2); ctx.fill(); ctx.stroke();
@@ -208,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (v >= 100_000_000) return { label: '富裕層',  cls: 'status-wealthy' };
     if (v >= 50_000_000)  return { label: '準富裕層', cls: 'status-prewealthy' };
     if (v >= 30_000_000)  return { label: 'アッパーマス', cls: 'status-uppermass' };
-    return { label: '一般大衆', cls: 'status-mass' };
+    return { label: '一般庶民', cls: 'status-mass' };
     }
 
 
