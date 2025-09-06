@@ -133,3 +133,28 @@ details.guide b.badge{ font-size:12px; padding:2px 8px; border:1px solid #93c5fd
 canvas {
   font-family: Meiryo, 'Yu Gothic', 'sans-serif' !important;
 }
+
+/* --- responsive tables (fund page, etc.) --- */
+.table-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid #e5e7eb; border-radius:10px; background:#fff; }
+.table-scroll table{ min-width: 640px; }
+.table-scroll::-webkit-scrollbar{ height: 10px; }
+.table-scroll::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:999px; }
+
+/* --- figures --- */
+.figure { margin: 1rem auto; text-align: center; }
+.figure img { max-width: 100%; height: auto; border:1px solid #e5e7eb; border-radius:12px; box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+.figure figcaption { color:#64748b; font-size:.95rem; margin-top:.35rem; }
+
+/* --- mini calculators (fund page) --- */
+.toc { display:flex; flex-wrap:wrap; gap:.25rem .9rem; margin:.6rem 0 1rem; }
+.toc a { color: var(--accent); text-decoration:none; }
+.toc a:hover { text-decoration:underline; }
+
+.calc-card { border:1px solid #e2e8f0; border-radius:12px; padding:14px; background:#fff; margin:12px 0; }
+.calc-card h4 { margin:.1rem 0 .5rem; font-size:1.05rem; }
+.calc-row { display:flex; align-items:center; gap:12px; margin:.5rem 0; flex-wrap:wrap; }
+.calc-row label { min-width:8em; font-weight:600; color:#334155; }
+.calc-row input[type="number"]{ width:120px; padding:8px 10px; border:1px solid #cbd5e1; border-radius:8px; background:#fff; font-size:14px; }
+.calc-row .unit { color:#64748b; }
+.calc-result { margin-top:.6rem; background:#f8fafc; border:1px solid #e6edf3; border-radius:8px; padding:10px 12px; font-weight:700; }
+.calc-note { color:#64748b; font-size:.9rem; margin-top:.3rem; }
