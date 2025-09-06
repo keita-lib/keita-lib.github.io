@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const yen = new Intl.NumberFormat('ja-JP');
 
+  // 固定フォントサイズ（控えめ）
+
   function updateTrack(el){
     // WebKit系用：入力要素自体の背景を進捗で塗る
     const min = +el.min || 0, max = +el.max || 100, val = +el.value || 0;
@@ -294,8 +296,4 @@ features.register(() => {
     }
   });
 })();
-
-
-
-
 

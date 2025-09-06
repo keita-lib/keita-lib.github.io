@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>本格シミュレーション | Life×Money</title>
+  <title>一歩進んだシミュレーション | Life×Money</title>
   <link rel="stylesheet" href="../assets/styles.css" />
   <link rel="stylesheet" href="../assets/simulator.css" />
   <!-- Chart.js -->
@@ -28,14 +28,14 @@
   <div class="wrap">
     <!-- ▼ ここから説明文を追加 ▼ -->
     <section class="muted" style="margin-bottom:1.5rem;">
-      <h1>本格シミュレーション</h1>
+      <h1>一歩進んだシミュレーション</h1>
       <p>
         <b>「1分でわかる複利体験」では、元本・年率・年数を変えることで、複利の力で資産がどのように増えるかを直感的に体験できます。みなさん富裕層になるための条件は見いだせたでしょうか。</b>
         <br>
         しかし、実際の人生設計では、毎年の追加投資やインフレ、資産運用のリスク、目標とするインカム（配当・利息）など、より多くの要素を考慮する必要があります。
       </p>
       <p>
-        <b>この「本格シミュレーション」ページでは、詳細なパラメータを設定し、資産とインカムの推移をより現実的にシミュレーションできます。</b>
+        <b>この「一歩進んだシミュレーション」ページでは、詳細なパラメータを設定し、資産とインカムの推移をより現実的にシミュレーションできます。</b>
         <br>
         目標達成までの道筋やリスクの幅、インフレ調整後の実質的な資産価値など、あなた自身のライフデザインに役立つ具体的な気づきを得ることができます。
       </p>
@@ -67,24 +67,24 @@
             <div class="section-title">基本パラメータ</div>
             <div class="row">
               <label>
-                初期資産（円）
+                初期資産（万円）
                 <span class="help" title="いま手元にある投資可能な資産。最初に運用を始める元本です。">?</span>
               </label>
-              <div class="dual" data-key="initial" data-type="int" data-min="0" data-max="2000000000" data-step="1000000"></div>
+              <div class="dual" data-key="initial" data-type="int" data-min="0" data-max="10000" data-step="100"></div>
             </div>
             <div class="row">
               <label>
-                追加投資（円/年）
+                追加投資額（万円/年）
                 <span class="help" title="毎年追加で投資する金額。給与などから投資に回す分です。">?</span>
               </label>
-              <div class="dual" data-key="contrib" data-type="int" data-min="0" data-max="50000000" data-step="100000"></div>
+              <div class="dual" data-key="contrib" data-type="int" data-min="0" data-max="1000" data-step="10"></div>
             </div>
             <div class="row">
               <label>
-                目標インカム（円/年）
+                目標インカム（万円/年）
                 <span class="help" title="利息・配当などで得たい年間キャッシュフローの目標額です。">?</span>
               </label>
-              <div class="dual" data-key="target" data-type="int" data-min="0" data-max="50000000" data-step="100000"></div>
+              <div class="dual" data-key="target" data-type="int" data-min="0" data-max="1000" data-step="10"></div>
             </div>
           </div>
 
@@ -169,7 +169,7 @@
           <div class="section-title" style="font-size:18px;">資産の推移（三本線）</div>
           <canvas id="assetsChart" height="480"></canvas>
           <div class="section-title" style="margin-top:32px; font-size:18px;">インカムの推移（三本線）</div>
-          <canvas id="incomeChart" height="320"></canvas>
+          <canvas id="incomeChart" height="480"></canvas>
           <p class="muted" style="margin-top:18px;">中央線＝期待値、上＝95%ベスト、下＝5%ワースト。教育目的の簡易モデル（年次正規リターン）です。</p>
         </div>
       </div>
@@ -193,18 +193,20 @@
 <script>
 /* ========== 初期状態 ========== */
 const state = {
-  initial:40000000,
-  contrib:2000000,
-  target:5000000,
-  gret:8.0,
-  iret:4.0,
-  infl:1.0,
-  years:20,
-  sg:18.0,
-  si:8.0,
-  paths:1000,
-  seed:42,
-  showReal:false,
+  // 金額系は「円」で保持（UIは万円）
+  initial: 4000 * 10000, // 4000万円
+  contrib:  200 * 10000, // 200万円/年
+  target:   500 * 10000, // 500万円/年
+  // 率・年数・その他はそのまま保持
+  gret: 8.0,
+  iret: 4.0,
+  infl: 1.0,
+  years: 20,
+  sg: 18.0,
+  si: 8.0,
+  paths: 1000,
+  seed: 42,
+  showReal: false,
 };
 const $ = (q)=>document.querySelector(q);
 let assetsChart, incomeChart;
@@ -223,6 +225,44 @@ function loadState(){
       if (typeof obj[k] !== 'undefined') state[k] = obj[k];
     });
   } catch(e){}
+  normalizeState();
+  try { console.log("State after migration:", state); } catch(e){}
+}
+
+function normalizeState(){
+  const yen = (v)=> Math.max(0, Math.round(Number(v||0)));
+  const num = (v)=> Number.isFinite(Number(v)) ? Number(v) : 0;
+  const clamp = (v, lo, hi)=> Math.min(hi, Math.max(lo, v));
+  // 金額（円保持）。もし古い保存で「万円」のままなら×10000。
+  const moneyKeys = {
+    initial: { max: 10000 * 10000 },
+    contrib: { max:  1000 * 10000 },
+    target:  { max:  1000 * 10000 },
+  };
+  Object.keys(moneyKeys).forEach(k=>{
+    let v = state[k];
+    if (typeof v === 'string') v = Number(v);
+    if (!Number.isFinite(v)) v = 0;
+    if (v > 0 && v < 10000) v = v * 10000; // 旧フォーマット（万円）補正
+    v = clamp(yen(v), 0, moneyKeys[k].max);
+    state[k] = v;
+  });
+
+  // 率・年数など。もし誤って×10000保存されていれば縮小
+  const shrinkIfScaled = (v)=>{
+    const n = num(v);
+    return (n > 1000 ? n / 10000 : n);
+  };
+
+  state.gret = clamp(shrinkIfScaled(state.gret), -20, 30);
+  state.iret = clamp(shrinkIfScaled(state.iret),   0, 12);
+  state.infl = clamp(shrinkIfScaled(state.infl),   0,  5);
+  state.sg   = clamp(shrinkIfScaled(state.sg),     0, 60);
+  state.si   = clamp(shrinkIfScaled(state.si),     0, 40);
+  state.years= Math.round(clamp(shrinkIfScaled(state.years), 5, 40));
+  state.paths= Math.round(clamp((num(state.paths) > 100000 ? num(state.paths)/10000 : num(state.paths)), 100, 5000));
+  state.seed = Math.round(clamp((num(state.seed)  > 100000 ? num(state.seed)/10000  : num(state.seed)), 1, 10000));
+  state.showReal = !!state.showReal;
 }
 
 /* ========== RNG & Normal ========== */
@@ -230,7 +270,7 @@ function mulberry32(a){ return function(){ let t=a+=0x6D2B79F5; t=Math.imul(t^(t
 function randn(rng){ let u=0,v=0; while(u===0)u=rng(); while(v===0)v=rng(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
 
 /* ========== Dual input (再入防止つき) ========== */
-function buildDual(el, value){
+function buildDual(el, rawValue){
   const type = el.dataset.type;
   const min  = parseFloat(el.dataset.min);
   const max  = parseFloat(el.dataset.max);
@@ -238,19 +278,27 @@ function buildDual(el, value){
   const key  = el.dataset.key;
 
   const r = document.createElement('input');
-  r.type='range'; r.min=min; r.max=max; r.step=step; r.value=value;
+  r.type='range'; r.min=min; r.max=max; r.step=step;
   const n = document.createElement('input');
-  n.type='number'; n.min=min; n.max=max; n.step=step; n.value=value;
+  n.type='number'; n.min=min; n.max=max; n.step=step;
 
   let syncing=false;
+  // 金額キーは state を円で保持し、UIは万円で表示
+  const isMoneyKey = (key==='initial' || key==='contrib' || key==='target');
+  const uiInit = (rawValue==null ? 0 : (isMoneyKey ? Number(rawValue)/10000 : Number(rawValue)));
+  r.value = uiInit;
+  n.value = uiInit;
+
   const clamp = (v)=>{ v=(type==='int')?parseInt(v||0,10):parseFloat(v||0); if(isNaN(v)) v=0; return Math.max(min,Math.min(max,v)); };
   const sync = (src,dst)=>{
     if(syncing) return;
     syncing=true;
-    const v=clamp(src.value);
+    const v = clamp(src.value);
     if(src.value!==String(v)) src.value=v;
     if(dst.value!==String(v)) dst.value=v;
-    state[key]=(type==='int')?parseInt(v,10):parseFloat(v);
+    const num = (type==='int')?parseInt(v,10):parseFloat(v);
+    // 円で保持するキーのみ×10000、他はそのまま
+    state[key] = isMoneyKey ? (num * 10000) : num;
     saveState(); // ← 変更時に保存
     queueUpdate();
     syncing=false;
@@ -295,7 +343,7 @@ function simulateMonteCarlo(p, sigmaG, sigmaI, paths, seed){
 
 /* ========== チャート ========== */
 function buildCharts(){
-  const base={
+  const mkBase = (yTitleText) => ({
     responsive:true,
     maintainAspectRatio:false,
     animation:false,
@@ -304,38 +352,44 @@ function buildCharts(){
         display: true,
         position: 'top',
         labels: {
-          font: { size: 20, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" },
+          font: { size: 24, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" },
           boxWidth: 28,
           padding: 18
         }
       },
-      title: {
-        display: false
-      }
+      title: { display: false }
     },
     scales: {
       x: {
-        title: { display: true, text: '年数', font: { size: 20, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" } },
+        title: { display: true, text: '年数', font: { size: 28, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" } },
         ticks: {
-          font: { size: 18, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" },
+          font: { size: 22, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" },
           callback: (v, i, arr) => {
-            // Yを除去して数値だけ表示
             if (typeof v === 'string' && v.startsWith('Y')) return v.slice(1);
             return v;
           }
         }
       },
       y: {
-        title: { display: true, text: '金額（円）', font: { size: 20, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" } },
+        title: { display: true, text: yTitleText, font: { size: 28, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" } },
         ticks: {
-          font: { size: 18, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" },
-          callback: (v)=>v.toLocaleString('ja-JP')
+          font: { size: 22, lineHeight: 1.6, family: "Meiryo, 'Yu Gothic', 'sans-serif'" },
+          callback: (v) => {
+            if (v >= 100000000) {
+              return (v / 100000000).toLocaleString('ja-JP') + '億円';
+            } else {
+              return (v / 10000).toLocaleString('ja-JP') + '万円';
+            }
+          }
         }
       }
     }
-  };
-  assetsChart=new Chart(document.getElementById('assetsChart'),{ type:'line', data:{labels:[],datasets:[]}, options:base });
-  incomeChart=new Chart(document.getElementById('incomeChart'),{ type:'line', data:{labels:[],datasets:[]}, options:base });
+  });
+
+  const baseAssets = mkBase('資産額');
+  const baseIncome = mkBase('インカム額');
+  assetsChart=new Chart(document.getElementById('assetsChart'),{ type:'line', data:{labels:[],datasets:[]}, options:baseAssets });
+  incomeChart=new Chart(document.getElementById('incomeChart'),{ type:'line', data:{labels:[],datasets:[]}, options:baseIncome });
 }
 
 function setDatasets(chart, mid, low, high){
@@ -364,11 +418,11 @@ function updateAll(){
 
   // KPI
   const req=(p.target_income/Math.max(p.income_return,1e-9));
-  $('#kpi-required').textContent = `${Math.round(req).toLocaleString('ja-JP')} 円`;
+  $('#kpi-required').textContent = `${Math.round(req / 10000).toLocaleString('ja-JP')} 万円`;
   const hit = det.income.findIndex(v=>v>=p.target_income);
   $('#kpi-year').textContent = (hit>=0)? `Year ${hit+1}` : '—';
-  $('#kpi-assets').textContent = `${Math.round(det.assets.at(-1)).toLocaleString('ja-JP')} 円`;
-  $('#kpi-income').textContent = `${Math.round(det.income.at(-1)).toLocaleString('ja-JP')} 円`;
+  $('#kpi-assets').textContent = `${Math.round(det.assets.at(-1) / 10000).toLocaleString('ja-JP')} 万円`;
+  $('#kpi-income').textContent = `${Math.round(det.income.at(-1) / 10000).toLocaleString('ja-JP')} 万円`;
 
   // ラベル
   const labels = det.years.map(y=>`Y${y}`);
