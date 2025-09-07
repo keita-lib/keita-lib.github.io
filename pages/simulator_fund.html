@@ -263,7 +263,7 @@
 
     <div style="margin-top:18px; display:flex; justify-content:center; gap:48px;">
       <a href="/pages/simulator.html" class="btn" style="font-size:18px;">一歩進んだシミュレーション← </a>
-      <a href="/pages/simulator_effecient frontier.html" class="btn" style="font-size:18px;">効率的フロンティアとは →</a>
+      <a href="/pages/simulator_effecient_frontier.html" class="btn" style="font-size:18px;">効率的フロンティアとは →</a>
   </div>
   <footer>
     <div class="container">
@@ -274,6 +274,15 @@
 <script>
 // ===== Mini calculators =====
 (function(){
+  // Fix stray backslashes rendering as Yen in code formulas (e.g., \[ ... \])
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#ret code').forEach(el => {
+      const t = el.textContent;
+      if (t && (t.includes('\\[') || t.includes('\\]'))) {
+        el.textContent = t.replace(/\\\[/g, '[').replace(/\\\]/g, ']');
+      }
+    });
+  });
   const $ = (q)=>document.querySelector(q);
   const fmt = (n, digits=2)=> Number(n).toLocaleString('ja-JP', { minimumFractionDigits: digits, maximumFractionDigits: digits });
 
