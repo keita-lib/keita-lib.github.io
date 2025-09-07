@@ -1,0 +1,279 @@
+/* =========================================================
+   report20250907.css  (note.com 風／軽量＆読みやすさ重視)
+   対応HTML: 先ほど提示した note風のマークアップ
+   ========================================================= */
+
+/* ---- Base / Reset ---- */
+:root{
+  --bg:#e6f7f4;       /* ミントグリーン系の背景色 */
+  --text:#1a1a1a;
+  --muted:#6b7280;     /* 説明・サブテキスト */
+  --line:#cceae4;      /* 背景に溶け込む柔らかい罫線色 */
+  --link:#0ea5e9;      /* アクセント（noteは緑系だが、汎用に淡いブルー）*/
+  --accent:#22c55e;    /* ちょいアクセント（ボタン/タグ） */
+  --maxw: 760px;       /* 本文の最大幅（noteは700〜800px程度）*/
+  --radius: 12px;
+  --leading: 1.85;
+}
+
+*{ box-sizing: border-box; }
+html, body{
+  margin:0; padding:0;
+}
+body.note-theme{
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family:
+    "Noto Sans JP", system-ui, -apple-system, Segoe UI, Roboto,
+    "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  line-height: var(--leading);
+  letter-spacing: .02em;
+  font-size: 16px;
+}
+
+/* ---- Container ---- */
+.container{
+  width:min(94vw, var(--maxw));
+  margin:0 auto;
+}
+
+/* ---- Hero / Title ---- */
+.hero{
+  padding: 48px 0 12px;
+}
+.hero-inner{
+  width:min(94vw, var(--maxw));
+  margin:0 auto;
+}
+.article-title{
+  margin: 0 0 10px;
+  font-size: clamp(22px, 3.6vw, 32px);
+  font-weight: 700;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.article-meta{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.meta-dot::before{ content:""; }
+.meta-dot{
+  opacity:.7;
+}
+
+/* ---- Article Body ---- */
+.article{
+  padding-bottom: 72px;
+}
+.article-body{
+  margin-top: 16px;
+}
+.lead{
+  font-size: 1.05rem;
+  margin: 0 0 8px;
+}
+
+/* ---- Divider ---- */
+.divider{
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 28px 0;
+}
+
+/* ---- Headings ---- */
+.section-title{
+  font-size: clamp(18px, 2.5vw, 22px);
+  font-weight: 700;
+  margin: 4px 0 10px;
+}
+.sub-title{
+  font-size: clamp(16px, 2.2vw, 19px);
+  font-weight: 600;
+  margin: 16px 0 6px;
+  color: #111827;
+}
+
+/* ---- Paragraph, Links ---- */
+p{ margin: 0 0 14px; }
+a{
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a:hover{ opacity: .9; }
+
+/* ---- Lists ---- */
+ol, ul{ padding-left: 1.2rem; margin: 0 0 12px; }
+.step-list li + li{ margin-top: 6px; }
+.bullet li + li{ margin-top: 6px; }
+
+.check, .todo{
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 12px;
+}
+.check li, .todo li{
+  position: relative;
+  padding-left: 1.6rem;
+  margin: 8px 0;
+}
+.check li::before{
+  content: "✓";
+  position: absolute; left: 0; top: 0.1rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+.todo li::before{
+  content: "・";
+  position: absolute; left: 0.3rem; top: 0.1rem;
+  color: var(--muted);
+}
+
+/* ---- Table of Contents (TOC) ---- */
+.toc{
+  margin: 12px 0 18px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.toc > strong{
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: .95rem;
+  color: #111827;
+}
+.toc ul{ margin: 0; padding-left: 1.1rem; }
+.toc a{ text-decoration: none; }
+.toc a:hover{ text-decoration: underline; }
+
+/* Anchor jump offset so headings don't stick to the top */
+:where(h2, h3){ scroll-margin-top: 72px; }
+
+/* ---- Quote ---- */
+.quote{
+  margin: 14px 0;
+  padding: 10px 14px;
+  border-left: 4px solid var(--line);
+  background: #f9fafb;
+  border-radius: 6px;
+}
+.quote p{ margin: 0; }
+
+/* ---- Links Section ---- */
+.links-list{
+  margin: 0 0 8px;
+}
+.links-list li + li{ margin-top: 6px; }
+.links-note{
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+/* ---- Footer / Tags ---- */
+.article-footer{
+  margin-top: 8px;
+}
+.tags{
+  display: flex; flex-wrap: wrap; gap: 8px;
+  list-style: none; padding: 0; margin: 0 0 6px;
+}
+.tag{
+  display: inline-block;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: .9rem;
+  color: #374151;
+  background: #fff;
+}
+.credit{
+  color: var(--muted);
+  font-size: .95rem;
+  margin: 0;
+}
+
+/* ---- Media / Responsive ---- */
+@media (max-width: 640px){
+  .hero{ padding: 36px 0 8px; }
+  .article{ padding-bottom: 56px; }
+  .lead{ font-size: 1rem; }
+}
+
+/* ---- Dark Mode (自動追随) ---- */
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0d0f12;
+    --text:#e7eaf0;
+    --muted:#a3a8b3;
+    --line:#262a33;
+    --link:#7dd3fc;  /* 暗背景でも視認性の高い水色 */
+  }
+  .quote{ background: #12151b; border-left-color:#2a2f3a; }
+  .tag{ background: #0d0f12; color:#d1d5db; border-color:#2a2f3a; }
+  .sub-title{ color:#e7eaf0; }
+}
+
+/* ===== Author Aside (筆者プロフィール) ===== */
+.layout{
+  display: grid;
+  grid-template-columns: 260px 1fr;  /* 左サイド 260px、右本文 */
+  gap: 28px;
+}
+
+@media (max-width: 900px){
+  .layout{
+     grid-template-columns: 1fr;
+  }
+}
+
+.author-aside{
+  position: relative;
+}
+
+.author-card{
+  position: sticky;
+  top: 24px;
+  background: #ffffffcc;                /* ミント背景上でも読みやすい半透明白 */
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 16px 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.05);
+}
+
+.author-title{
+  font-size: .9rem;
+  color: var(--muted);
+  letter-spacing: .08em;
+  margin-bottom: 4px;
+}
+
+.author-name{
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+  line-height: 1.4;
+}
+
+.author-text{
+  margin: 0 0 10px;
+  font-size: .97rem;
+}
+
+@media (max-width: 900px){
+  .author-card{ position: static; }
+}
+
+@media (prefers-color-scheme: dark){
+  .author-card{
+    background: #0d0f12cc;
+    border-color: var(--line);
+  }
+}
